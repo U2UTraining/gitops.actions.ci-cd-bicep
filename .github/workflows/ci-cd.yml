@@ -70,7 +70,7 @@ jobs:
       AZURE-WEBAPP-NAME: u2u-mywebapp-dev
     steps:
       - name: Download Templates
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v8
         with:
           name: templates_artifact
           path: ${{ runner.temp }}/templates
