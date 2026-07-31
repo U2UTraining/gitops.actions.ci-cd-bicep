@@ -111,18 +111,18 @@ jobs:
       AZURE-WEBAPP-NAME: u2u-mywebapp-prod
     steps:
       - name: Download Templates
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v8
         with:
           name: templates_artifact
           path: ${{ runner.temp }}/templates
 
       - name: Login to Azure
-        uses: azure/login@v1
+        uses: azure/login@v3
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       
       - name: Deploy BICEP template
-        uses: azure/arm-deploy@v1
+        uses: azure/arm-deploy@v2
         id: deploywebapp
         with:
           deploymentName: create-webapp
@@ -132,7 +132,7 @@ jobs:
           parameters: location=${{ ENV.AZURE-LOCATION }} appName=${{env.AZURE-WEBAPP-NAME}}
           
       - name: Download Publish
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v8
         with:
           name: publish_artifact
           path: ${{ runner.temp }}/publish
