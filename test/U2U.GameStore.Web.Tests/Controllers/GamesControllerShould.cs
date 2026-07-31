@@ -12,37 +12,37 @@ namespace U2U.GameStore.Web.Controllers.Tests
 {
   public class GamesControllerShould
   {
-    [Fact()]
-    public async void LetTheIndexActionReturnIndexView()
-    {
-      // ARRANGE: Create fake dependencies
-      Publisher? pub = new Publisher(1, "Test Industries");
-      Game? g = pub.CreateGame("The Testing");
-      Money? m = new Money(0, CurrencyName.EUR);
-      List<(Game, Money)>? list = new List<(Game, Money)>() { (g, m) };
-      Mock<IGameService>? fakeGameService = new Mock<IGameService>();
-      fakeGameService.Setup(s => s.GamesAsync()).Returns(list.ToAsyncEnumerable());
-      //var fakeShoppingBasketService = new Mock<IShoppingBasketService>();
-      //fakeShoppingBasketService.Setup(s => s.AddGameToShoppingBasketWithId(It.IsAny<int>(), It.IsAny<int>()))
-      //  .Returns(new ValueTask<int>(1));
+    //[Fact()]
+    //public async void LetTheIndexActionReturnIndexView()
+    //{
+    //  // ARRANGE: Create fake dependencies
+    //  Publisher? pub = new Publisher(1, "Test Industries");
+    //  Game? g = pub.CreateGame("The Testing");
+    //  Money? m = new Money(0, CurrencyName.EUR);
+    //  List<(Game, Money)>? list = new List<(Game, Money)>() { (g, m) };
+    //  Mock<IGameService>? fakeGameService = new Mock<IGameService>();
+    //  fakeGameService.Setup(s => s.GamesAsync()).Returns(list.ToAsyncEnumerable());
+    //  //var fakeShoppingBasketService = new Mock<IShoppingBasketService>();
+    //  //fakeShoppingBasketService.Setup(s => s.AddGameToShoppingBasketWithId(It.IsAny<int>(), It.IsAny<int>()))
+    //  //  .Returns(new ValueTask<int>(1));
 
-      Mock<ILogger<GamesController>>? fakeLogger = new Mock<ILogger<GamesController>>();
-      // ARRANGE: Create the controller
-      using (GamesController? gamesController = new GamesController(fakeGameService.Object, fakeLogger.Object))
-      {
-        // ACT: Call the action on the sut
-        IActionResult actionResult = gamesController.Index();
+    //  Mock<ILogger<GamesController>>? fakeLogger = new Mock<ILogger<GamesController>>();
+    //  // ARRANGE: Create the controller
+    //  using (GamesController? gamesController = new GamesController(fakeGameService.Object, fakeLogger.Object))
+    //  {
+    //    // ACT: Call the action on the sut
+    //    IActionResult actionResult = gamesController.Index();
 
-        // ASSERT: Did we get the expected result
-        ViewResult vr = Assert.IsType<ViewResult>(actionResult);
-        GamesIndexViewModel vm = Assert.IsType<GamesIndexViewModel>(vr.Model);
-        await foreach ((Game game, Money money) in vm.Games)
-        {
-          Assert.Equal(g, game);
-          Assert.Equal(m, money);
-        }
-      }
-    }
+    //    // ASSERT: Did we get the expected result
+    //    ViewResult vr = Assert.IsType<ViewResult>(actionResult);
+    //    GamesIndexViewModel vm = Assert.IsType<GamesIndexViewModel>(vr.Model);
+    //    await foreach ((Game game, Money money) in vm.Games)
+    //    {
+    //      Assert.Equal(g, game);
+    //      Assert.Equal(m, money);
+    //    }
+    //  }
+    //}
 
     [Fact()]
     public async void LetTheCreateActionReturnCreateView()

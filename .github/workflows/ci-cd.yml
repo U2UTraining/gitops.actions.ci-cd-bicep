@@ -12,8 +12,8 @@ on:
 
 env:
   AZURE_RG: github-actions-staged
-  AZURE_SUBSCRIPTION: 30a911a0-bad6-47e9-8aeb-507c96ed5d18
-  AZURE-LOCATION: eastUS
+  AZURE_SUBSCRIPTION: 287f582d-e627-4387-91db-3b2cdffa64ef
+  AZURE-LOCATION: belgiumcentral
   
 jobs:
   Build-Job:
@@ -22,11 +22,11 @@ jobs:
       configuration: release
     steps:
     - name: Checkout Sources
-      uses: actions/checkout@v2
+      uses: actions/checkout@v7
     - name: Setup .NET
-      uses: actions/setup-dotnet@v2.0.0
+      uses: actions/setup-dotnet@v6.0.0
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 10.0.x
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
@@ -36,13 +36,13 @@ jobs:
     - name: Publish 
       run: dotnet publish --configuration ${{ env.configuration }} --output ${{runner.temp }}/publish
     - name: Upload the Publish artifact
-      uses: actions/upload-artifact@v3.0.0
+      uses: actions/upload-artifact@v7.0.0
       with: 
         name: publish_artifact
         path: ${{ runner.temp }}/publish
         retention-days: 30
     - name: Upload a Templates Artifact
-      uses: actions/upload-artifact@v3.0.0
+      uses: actions/upload-artifact@v7.0.0
       with:
         name: templates_artifact
         path: ./templates/* 
@@ -53,11 +53,11 @@ jobs:
     needs: [Build-Job]
     steps:
       - name: Login to Azure
-        uses: azure/login@v1
+        uses: azure/login@v3
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Create Resource Group
-        uses: Azure/cli@v1
+        uses: Azure/cli@v2
         with:
           inlineScript: 
             az group create --name ${{ env.AZURE_RG }} --location ${{ env.AZURE-LOCATION }}
@@ -76,12 +76,12 @@ jobs:
           path: ${{ runner.temp }}/templates
           
       - name: Login to Azure
-        uses: azure/login@v1
+        uses: azure/login@v3
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       
       - name: Deploy BICEP template
-        uses: azure/arm-deploy@v1
+        uses: azure/arm-deploy@v2
         id: deploywebappd
         with:
           deploymentName: create-webapp
@@ -91,7 +91,7 @@ jobs:
           parameters: location=${{ ENV.AZURE-LOCATION }} appName=${{env.AZURE-WEBAPP-NAME}}
 
       - name: Download Publish
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v8
         with:
           name: publish_artifact
           path: ${{ runner.temp }}/publish
